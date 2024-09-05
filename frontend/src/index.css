@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@-webkit-keyframes fadeIn {
+  from {opacity: 0}
+  to {opacity: 1}
+}
+@keyframes fadeIn {
+  from {opacity: 0}
+  to {opacity: 1}
+}
+
+@layer utilities {
+
+  .table-header-text {
+    @apply text-gray-600 uppercase text-sm leading-normal font-bold;
+  }
+
+  .fade-animation {
+    -webkit-animation-name: fadeIn;
+    -webkit-animation-duration: .5s;
+    animation-name: fadeIn;
+    animation-duration: .5s;
+  }
+
+}
