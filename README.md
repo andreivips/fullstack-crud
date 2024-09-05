@@ -14,7 +14,8 @@
         - can be closed by presing on **X** button, `Esc` button or outside modal
     - Modify data modal window should have own shareable link that opens it
         - `http://localhost:3001/edit/USERID`
-    - Responsive design
+- Responsive design
+- Tests
 
 ## Backend, REST API (ExpressJS, MongoDB)
 
