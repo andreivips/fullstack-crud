@@ -8,9 +8,6 @@ describe('User Routes', () => {
   const testUsersIds = [];
 
   beforeAll(async () => {
-    // server = app.listen(PORT, () => {
-    //   console.log('Test server running on port 3000');
-    // });
     // Create test user
     testUser = new User({
       name: 'TestUser',
@@ -29,8 +26,6 @@ describe('User Routes', () => {
   afterAll(async () => {
     // Delete test users
     await User.deleteMany({ _id: {$in:testUsersIds} });
-
-    // server.close();
   });
 
   describe('GET /api/users', () => {
