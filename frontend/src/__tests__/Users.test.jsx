@@ -8,7 +8,7 @@ import UserForm from '../components/UserForm';
 
 jest.mock('axios');
 
-describe('Home Component', () => {
+describe('Users Component', () => {
 
   const mockData = {
     data: [
