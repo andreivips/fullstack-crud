@@ -4,28 +4,44 @@ const app = require('../app');
 
 describe('User Routes', () => {
 
-  let testUser = {};
-  const testUsersIds = [];
+  const testUserData = {
+    name: 'TestUser',
+    age: 30,
+    email: 'test.user@example.com',
+    interests: 'test data',
+    address: 300,
+  };
+  let testUserObj = {};
+  const testNewUserData = {
+    name: 'TestNewUser',
+    age: 30,
+    email: 'test.new.user@example.com',
+    interests: 'test data',
+    address: 300,
+  };
+  // Delete test users by email
+  const deleteTestUsers = async () => {
+    return await User.deleteMany({
+      email: {
+        $in: [
+          testUserData.email,
+          testNewUserData.email,
+        ]
+      },
+    });
+  }
 
   beforeAll(async () => {
+    await deleteTestUsers();
+
     // Create test user
-    testUser = new User({
-      name: 'TestUser',
-      age: 30,
-      email: 'test.user@example.com',
-      interests: 'test data',
-      address: 300,
-    });
+    testUserObj = new User(testUserData);
 
     // Save test user
-    await testUser.save();
-
-    // Save test user id
-    testUsersIds.push(testUser._id.toString());
+    await testUserObj.save();
   });
   afterAll(async () => {
-    // Delete test users
-    await User.deleteMany({ _id: {$in:testUsersIds} });
+    await deleteTestUsers();
   });
 
   describe('GET /api/users', () => {
@@ -47,17 +63,9 @@ describe('User Routes', () => {
     it('should create a new user', async () => {
       const response = await request(app)
         .post('/api/users')
-        .send({
-          name: 'TestNewUser',
-          age: 30,
-          email: 'test.new.user@example.com',
-          interests: 'test data',
-          address: 300,
-        });
+        .send(testNewUserData);
       expect(response.status).toBe(201);
       expect(typeof response.body).toBe('object');
-      // Save new test user id
-      testUsersIds.push(response.body._id)
     });
 
     it('should return 400 bad request for missing fields', async () => {
@@ -70,7 +78,7 @@ describe('User Routes', () => {
 
   describe('GET /api/users/:id', () => {
     it('should return a single user', async () => {
-      const response = await request(app).get(`/api/users/${testUser._id}`);
+      const response = await request(app).get(`/api/users/${testUserObj._id}`);
       expect(response.status).toBe(200);
       expect(typeof response.body).toBe('object');
     });
@@ -84,7 +92,7 @@ describe('User Routes', () => {
   describe('PUT /api/users/:id', () => {
     it('should update an existing user', async () => {
       const response = await request(app)
-        .put(`/api/users/${testUser._id}`)
+        .put(`/api/users/${testUserObj._id}`)
         .send({
           name: 'Updated TestUser',
         });
@@ -102,12 +110,12 @@ describe('User Routes', () => {
 
   describe('DELETE /api/users/:id', () => {
     it('should delete a user', async () => {
-      const response = await request(app).delete(`/api/users/${testUser._id}`);
+      const response = await request(app).delete(`/api/users/${testUserObj._id}`);
       expect(response.status).toBe(200);
       expect(response.body.message).toBe('User deleted successfully');
 
       // Verify the user is removed from the database
-      const deletedUser = await User.findById(testUser._id);
+      const deletedUser = await User.findById(testUserObj._id);
       expect(deletedUser).toBeNull();
     });
 

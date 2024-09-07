@@ -28,7 +28,7 @@
 - Run `npm start` to run application server
     - Open in browser `localhost:3000` to check if app is working (set defined in `.env` port if changed)
 - Run `npm run test` to test endpoints
-    - runs on defined in `.env` > `MONGODB_URI` database (should be replaced with usage of `mongodb-memory-server`)
+    - runs on defined in `.env` > `MONGODB_URI` database (TODO: should be replaced with usage of `mongodb-memory-server`)
 
 ## Frontend, CRUD app (ReactJS, TailwindCSS, Vite)
 
@@ -45,7 +45,7 @@
 
 ## Notes
 
-- MVP-like solution with basic architectural decisions and no extra libraries (like: UI, validation, storage, ORM)
+- MVP-like solution with basic architectural decisions and no extra libraries (like: UI, validation, storage)
 
 ## Screenshots
 
