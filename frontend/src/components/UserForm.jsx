@@ -15,7 +15,6 @@ export default function UserForm({
   userId,
   onSave
 }) {
-  // console.log({...initialData})
   const [userData, setUserData] = useState(defaultData);
 
   useEffect(() => {
