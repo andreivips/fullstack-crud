@@ -3,18 +3,37 @@ import { useState } from 'react';
 import clsx from 'clsx';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
+let timerIn = undefined;
+let timerOut = undefined;
+
 const Modal = ({ isOpen, onClose, children }) => {
-  const modalRef = useRef(null);
+  const modalRef = useRef();
 
   useEffect(() => {
     if (isOpen) {
       disableBodyScroll(document.querySelector('body'))
       document.addEventListener('click', handleClickOutside, true);
       document.addEventListener('keydown', handleEscapePress);
+      // leave only fadeIn effect
+      clearTimeout(timerOut);
+      modalRef.current?.classList.remove('animate-fadeOut');
+      modalRef.current?.classList.add('animate-fadeIn');
+      timerIn = setTimeout(() => {
+        modalRef.current?.classList.remove("hidden");
+        modalRef.current?.classList.add("flex");
+      },0)
     } else {
       enableBodyScroll(document.querySelector('body'));
       document.removeEventListener('click', handleClickOutside, true);
       document.removeEventListener('keydown', handleEscapePress);
+      // leave only fadeOut effect
+      clearTimeout(timerIn);
+      modalRef.current?.classList.remove('animate-fadeIn');
+      modalRef.current?.classList.add('animate-fadeOut');
+      timerOut = setTimeout(() => {
+        modalRef.current?.classList.remove("flex");
+        modalRef.current?.classList.add("hidden");
+      },300)
     }
   }, [isOpen]);
 
@@ -34,8 +53,8 @@ const Modal = ({ isOpen, onClose, children }) => {
     <div
       ref={modalRef}
       className={clsx(
-        'fade-animation fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-screen w-full flex items-center justify-center',
-        isOpen ? 'block' : 'hidden'
+         'hidden fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-screen w-full items-center justify-center',
+        // isOpen ? 'animate-fadeIn' : 'animate-fadeOut'
       )}
     >
       <div className="relative bg-white rounded-lg shadow-xl w-full max-w-md">
