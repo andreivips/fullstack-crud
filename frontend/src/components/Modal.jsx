@@ -10,17 +10,19 @@ const Modal = ({ isOpen, onClose, children }) => {
   const modalRef = useRef();
 
   useEffect(() => {
+    clearTimeout(timerOut);
+    clearTimeout(timerIn);
     if (isOpen) {
       disableBodyScroll(document.querySelector('body'))
       document.addEventListener('click', handleClickOutside, true);
       document.addEventListener('keydown', handleEscapePress);
       // leave only fadeIn effect
       clearTimeout(timerOut);
-      modalRef.current?.classList.remove('animate-fadeOut');
-      modalRef.current?.classList.add('animate-fadeIn');
+      modalRef.current.classList.remove('animate-fadeOut');
+      modalRef.current.classList.add('animate-fadeIn');
       timerIn = setTimeout(() => {
-        modalRef.current?.classList.remove("hidden");
-        modalRef.current?.classList.add("flex");
+        modalRef.current.classList.remove("hidden");
+        modalRef.current.classList.add("flex");
       },0)
     } else {
       enableBodyScroll(document.querySelector('body'));
@@ -28,11 +30,11 @@ const Modal = ({ isOpen, onClose, children }) => {
       document.removeEventListener('keydown', handleEscapePress);
       // leave only fadeOut effect
       clearTimeout(timerIn);
-      modalRef.current?.classList.remove('animate-fadeIn');
-      modalRef.current?.classList.add('animate-fadeOut');
+      modalRef.current.classList.remove('animate-fadeIn');
+      modalRef.current.classList.add('animate-fadeOut');
       timerOut = setTimeout(() => {
-        modalRef.current?.classList.remove("flex");
-        modalRef.current?.classList.add("hidden");
+        modalRef.current.classList.remove("flex");
+        modalRef.current.classList.add("hidden");
       },300)
     }
   }, [isOpen]);
@@ -52,10 +54,7 @@ const Modal = ({ isOpen, onClose, children }) => {
   return (
     <div
       ref={modalRef}
-      className={clsx(
-         'hidden fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-screen w-full items-center justify-center',
-        // isOpen ? 'animate-fadeIn' : 'animate-fadeOut'
-      )}
+      className="hidden fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-screen w-full items-center justify-center"
     >
       <div className="relative bg-white rounded-lg shadow-xl w-full max-w-md">
         <div className="flex justify-end p-2">
